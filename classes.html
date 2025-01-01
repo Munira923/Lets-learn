@@ -1,0 +1,218 @@
+<!-- classes.html -->
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة المقررات - المقررات الافتراضية المتقدمة</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #004080;
+            margin: 0;
+            direction: rtl;
+        }
+        header {
+            background-color: #004080;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        header button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+        header button:hover {
+            background-color: #0052a3;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #d0e0ff;
+            border-radius: 10px;
+        }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .box {
+            flex: 1;
+            margin: 10px;
+            padding: 20px;
+            border: 1px solid #d0e0ff;
+            border-radius: 10px;
+            background-color: #e0efff;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #8e44ad;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        button:hover {
+            background-color: #6c3483;
+            transform: scale(1.05);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 500px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            padding: 20px;
+            text-align: center;
+        }
+        .modal h3 {
+            margin-bottom: 20px;
+        }
+        .modal button {
+            margin: 10px;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button onclick="window.location.href='index.html'">العودة للصفحة الرئيسية</button>
+        <h1>إدارة المقررات</h1>
+    </header>
+    <div class="container">
+        <div class="flex-container">
+            <div class="box">
+                <h2>اختر المقرر لإضافته</h2>
+                <select id="classSelect">
+                    <option value="رياضيات 101">رياضيات 101</option>
+                    <option value="تقنية المعلومات 202">تقنية المعلومات 202</option>
+                    <option value="علوم الحاسب 303">علوم الحاسب 303</option>
+                    <option value="تقنية المعلومات 450">تقنية المعلومات 450</option>
+                    <option value="رياضيات 140">رياضيات 140</option>
+                </select>
+                <button onclick="confirmAgreement()">إضافة المقرر</button>
+            </div>
+            <div class="box">
+                <h2>عرض المواد المضافة</h2>
+                <select id="addedClassesSelect" onchange="viewSelectedClass()">
+                    <option value="" disabled selected>اختر مقررًا لعرضه</option>
+                </select>
+                <div class="video-placeholder">
+                    <img id="classImage" src="default-placeholder.jpg" alt="صورة تمثيلية للمقرر">
+                    <!-- <p id="classTitle">اختر مقررًا لعرضه</p> -->
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+            <button onclick="window.location.href='user.html'">الذهاب إلى الملف الشخصي</button>
+        </div>
+    </div>
+
+    <!-- Modal for agreement -->
+    <div class="overlay" id="overlay"></div>
+    <div class="modal" id="agreementModal">
+        <h3>التعهد الأخلاقي</h3>
+        <p>استخدام مواد الدورة للتعلم الشخصي فقط ولا تشاركها أو تنسخها أو تعيد توزيعها.</p>
+        <p>احترم حقوق الطبع والنشر وحقوق الملكية الفكرية للمحتوى.</p>
+        <p>تجنب استخدام المواد لأي شكل من أشكال الغش الأكاديمي.</p>
+        <p>كن مسؤولاً وأخلاقياً أثناء استخدام المنصة.</p>
+        <button onclick="acceptAgreement()">موافق</button>
+        <button onclick="declineAgreement()">لا أوافق</button>
+    </div>
+
+    <script>
+        function confirmAgreement() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('agreementModal').style.display = 'block';
+        }
+
+        function acceptAgreement() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('agreementModal').style.display = 'none';
+            addClass();
+        }
+
+        function declineAgreement() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('agreementModal').style.display = 'none';
+            alert('لم يتم إضافة المقرر بسبب رفضك التعهد الأخلاقي.');
+        }
+
+        function addClass() {
+            const selectedClass = document.getElementById('classSelect').value;
+            const classTitle = document.getElementById('classSelect').options[document.getElementById('classSelect').selectedIndex].text;
+
+            const selectedClasses = JSON.parse(localStorage.getItem('selectedClasses')) || [];
+
+            if (!selectedClasses.includes(classTitle)) {
+                selectedClasses.push(classTitle);
+                localStorage.setItem('selectedClasses', JSON.stringify(selectedClasses));
+                alert(`تمت إضافة المقرر بنجاح.`);
+                loadAddedClasses();
+            } else {
+                alert(`المقرر مضاف مسبقاً.`);
+            }
+        }
+
+        function loadAddedClasses() {
+            const addedClassesSelect = document.getElementById('addedClassesSelect');
+            const selectedClasses = JSON.parse(localStorage.getItem('selectedClasses')) || [];
+
+            addedClassesSelect.innerHTML = '<option value="" disabled selected>اختر مقررًا لعرضه</option>'; // Reset options
+            selectedClasses.forEach((classTitle) => {
+                const option = document.createElement('option');
+                option.value = classTitle;
+                option.textContent = classTitle;
+                addedClassesSelect.appendChild(option);
+            });
+        }
+
+        function viewSelectedClass() {
+            const selectedClass = document.getElementById('addedClassesSelect').value;
+            document.getElementById('classTitle').innerText = selectedClass;
+            document.getElementById('classImage').src = 'default-placeholder.jpg'; // Example image update for selected class
+        }
+
+        // Load added classes on page load
+        loadAddedClasses();
+    </script>
+</body>
+</html>

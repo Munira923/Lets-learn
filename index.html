@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الصفحة الرئيسية - الفصول الافتراضية المتقدمة</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+            color: #004080;
+            direction: rtl;
+        }
+        header {
+            background-color: #004080;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #e0efff;
+            padding: 10px 0;
+        }
+        nav a {
+            margin: 0 20px;
+            text-decoration: none;
+            color: #004080;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        nav a:hover {
+            color: #0066cc;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #d0e0ff;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        /* Popup styles */
+        #loginPopup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            text-align: center;
+        }
+        #loginPopup input {
+            margin: 10px 0;
+            padding: 10px;
+            width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        #loginPopup button {
+            padding: 10px 20px;
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #loginPopup button:hover {
+            background-color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <div id="loginPopup">
+        <h2>تسجيل الدخول</h2>
+        <input type="text" id="username" placeholder="اسم المستخدم">
+        <input type="password" id="password" placeholder="كلمة المرور">
+        <button onclick="login()">تسجيل الدخول</button>
+    </div>
+    <header>
+        <h1> هيا نتعلم</h1>
+    </header>
+    <nav>
+        <a href="index.html">الصفحة الرئيسية</a>
+        <a href="classes.html">الفصول الافتراضية</a>
+        <a href="user.html">ملفي الشخصي</a>
+    </nav>
+    <div class="container">
+        <h2>استمتع بالتعلم في بيئة افتراضية متطورة</h2>
+    </div>
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="resetData()" style="background-color: red; color: white; padding: 10px 20px; font-size: 16px; border-radius: 8px; cursor: pointer;">
+            تسجيل خروج
+        </button>
+    </div>
+    
+    <script>
+        function resetData() {
+            if (confirm("هل أنت متأكد أنك تريد تسجيل الخروج؟")) {
+                localStorage.clear();
+                alert("تم تسجيل الخروج بنجاح");
+                window.location.reload(); // إعادة تحميل الصفحة
+            }
+        }
+
+        
+        // Show the login popup only on the first visit
+        window.onload = function() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            if (!loggedInUser) {
+                document.getElementById('loginPopup').style.display = 'block';
+            }
+        };
+        
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Store the username in localStorage to indicate the user has logged in
+            localStorage.setItem('loggedInUser', username);
+
+            // Hide the login popup
+            document.getElementById('loginPopup').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

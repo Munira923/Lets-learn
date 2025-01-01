@@ -1,0 +1,202 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - الفصول الافتراضية المتقدمة</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #004080;
+            margin: 0;
+            direction: rtl;
+        }
+        header {
+            background-color: #004080;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+            background-color: #ffffff;
+            border: 1px solid #d0e0ff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            background-color: #0052a3;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>تسجيل الدخول</h1>
+    </header>
+    <div class="container">
+        <h2>مرحباً بك في الفصول الافتراضية</h2>
+        <form onsubmit="return handleLogin(event)">
+            <input type="text" id="username" placeholder="اسم المستخدم" required>
+            <input type="password" id="password" placeholder="كلمة المرور" required>
+            <button type="submit">تسجيل الدخول</button>
+        </form>
+    </div>
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username && password) {
+                // Store username in localStorage
+                localStorage.setItem('loggedInUser', username);
+
+                // Redirect to the homepage
+                window.location.href = "index.html";
+            } else {
+                alert("اسم المستخدم أو كلمة المرور غير صحيحة.");
+            }
+        }
+    </script>
+</body>
+</html>
+
+<!-- user.html -->
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الملف الشخصي - الفصول الافتراضية المتقدمة</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #004080;
+            margin: 0;
+            direction: rtl;
+        }
+        header {
+            background-color: #004080;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #d0e0ff;
+            border-radius: 10px;
+        }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .box {
+            flex: 1;
+            margin: 10px;
+            padding: 20px;
+            border: 1px solid #d0e0ff;
+            border-radius: 10px;
+            background-color: #e0efff;
+        }
+        .profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .profile img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            margin-right: 15px;
+        }
+        .profile h2 {
+            margin: 0;
+            font-size: 24px;
+            color: #004080;
+        }
+        .action-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .action-buttons button {
+            background-color: #009688;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        .action-buttons button:hover {
+            background-color: #00796b;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>الملف الشخصي</h1>
+    </header>
+    <div class="container">
+        <div class="flex-container">
+            <div class="box">
+                <h2>مرحباً</h2>
+                <div class="profile">
+                    <img id="userImage" src="default-profile.png" alt="صورة المستخدم">
+                    <h2 id="userName">اسم المستخدم</h2>
+                </div>
+            </div>
+        </div>
+        <div class="action-buttons">
+            <button onclick="window.location.href='classes.html'">الذهاب إلى الفصول</button>
+            <button onclick="editProfile()">تعديل الملف الشخصي</button>
+        </div>
+    </div>
+    <script>
+        // Load logged-in user
+        const loggedInUser = localStorage.getItem('loggedInUser');
+        if (loggedInUser) {
+            document.getElementById('userName').innerText = loggedInUser;
+        }
+
+        function editProfile() {
+            const newName = prompt("أدخل اسمك الجديد:", loggedInUser || "");
+            if (newName) {
+                document.getElementById('userName').innerText = newName;
+                localStorage.setItem('loggedInUser', newName);
+            }
+        }
+    </script>
+</body>
+</html>
